@@ -19,27 +19,28 @@ static AppTimer *display_timer;
 static uint32_t DISPLAY_FOR_MILLISECONDS = 5000;
 
 static void update_time() {
-  // tm-Struktur erstellen
+  // create tm-structure
   time_t temp = time(NULL); 
   struct tm *tick_time = localtime(&temp);
 
-  // 'long-lived' Puffer erstellen
+  // create long-lived buffer
   static char buffer_time[] = "0000";
 
-  // Momentane Zeit in den Puffer schreiben
+  // write time in buffer
   if(clock_is_24h_style() == true)
     strftime(buffer_time, sizeof("0000"), "%H%M", tick_time);
   else
     strftime(buffer_time, sizeof("0000"), "%I%M", tick_time);
   
+  // set defaults
   GBitmap *gb_hour1 = gb_TIME_NUMBER[0];
   GBitmap *gb_hour2 = gb_TIME_NUMBER[0];
   GBitmap *gb_minute1 = gb_TIME_NUMBER[0];
   GBitmap *gb_minute2 = gb_TIME_NUMBER[0];
   
-  // Bitmap für hours1 bestimmen
+  // get hours1 bitmap
   switch(buffer_time[0]) {
-    // 0 ist Standardwert
+    // 0 is default
     //case '0': gb_hour1 = gb_TIME_NUMBER[0]; break;
     case '1': gb_hour1 = gb_TIME_NUMBER[1]; break;
     case '2': gb_hour1 = gb_TIME_NUMBER[2]; break;
@@ -52,9 +53,9 @@ static void update_time() {
     case '9': gb_hour1 = gb_TIME_NUMBER[9]; break;
   }
   
-  // Bitmap für hours2 bestimmen
+  // get hours2 bitmap
   switch(buffer_time[1]) {
-    // 0 ist Standardwert
+    // 0 is default
     //case '0': gb_hour2 = gb_TIME_NUMBER[0]; break;
     case '1': gb_hour2 = gb_TIME_NUMBER[1]; break;
     case '2': gb_hour2 = gb_TIME_NUMBER[2]; break;
@@ -67,9 +68,9 @@ static void update_time() {
     case '9': gb_hour2 = gb_TIME_NUMBER[9]; break;
   }
   
-  // Bitmap für minute1 bestimmen
+  // get minute1 bitmap
   switch(buffer_time[2]) {
-    // 0 ist Standardwert
+    // 0 is default
     //case '0': gb_minute1 = gb_TIME_NUMBER[0]; break;
     case '1': gb_minute1 = gb_TIME_NUMBER[1]; break;
     case '2': gb_minute1 = gb_TIME_NUMBER[2]; break;
@@ -82,9 +83,9 @@ static void update_time() {
     case '9': gb_minute1 = gb_TIME_NUMBER[9]; break;
   }
   
-  // Bitmap für minute2 bestimmen
+  // get minute2 bitmap
   switch(buffer_time[3]) {
-    // 0 ist Standardwert
+    // 0 is default
     //case '0': gb_minute2 = gb_TIME_NUMBER[0]; break;
     case '1': gb_minute2 = gb_TIME_NUMBER[1]; break;
     case '2': gb_minute2 = gb_TIME_NUMBER[2]; break;
@@ -97,7 +98,7 @@ static void update_time() {
     case '9': gb_minute2 = gb_TIME_NUMBER[9]; break;
   }
   
-  // Bitmaps setzen
+  // set bitmaps
   bitmap_layer_set_bitmap(bl_hour1, gb_hour1);
   bitmap_layer_set_bitmap(bl_hour2, gb_hour2);
   bitmap_layer_set_bitmap(bl_minute1, gb_minute1);
@@ -105,16 +106,17 @@ static void update_time() {
 }
 
 static void update_date() {
-  // tm-Struktur erstellen
+  // create tm-structure
   time_t temp = time(NULL); 
   struct tm *tick_time = localtime(&temp);
 
-  // 'long-lived' Puffer erstellen
+  // create long-lived buffer
   static char buffer_date[] = "00000";
 
-  // Momentanes Datum in den Puffer schreiben
+  // write date in buffer
   strftime(buffer_date, sizeof("00000"), "%u%d%m", tick_time);
   
+  // set defaults
   GBitmap *gb_day1 = gb_DATE_FONT_WEEKDAY_1_a;
   GBitmap *gb_day2 = gb_DATE_FONT_WEEKDAY_1_b;
   GBitmap *gb_date1 = gb_DATE_NUMBER[0];
@@ -122,9 +124,9 @@ static void update_date() {
   GBitmap *gb_date3 = gb_DATE_NUMBER[0];
   GBitmap *gb_date4 = gb_DATE_NUMBER[0];
   
-  // Bitmap für day1+day2 bestimmen
+  // get day1+day2 bitmaps
   switch(buffer_date[0]) {
-    // 1 ist Standardwert
+    // 1 is default
     //case '1': gb_day1 = gb_DATE_FONT_WEEKDAY_1_a; gb_day2 = gb_DATE_FONT_WEEKDAY_1_b; break;
     case '2': gb_day1 = gb_DATE_FONT_WEEKDAY_2_a; gb_day2 = gb_DATE_FONT_WEEKDAY_2_b; break;
     case '3': gb_day1 = gb_DATE_FONT_WEEKDAY_3_a; gb_day2 = gb_DATE_FONT_WEEKDAY_3_b; break;
@@ -134,9 +136,9 @@ static void update_date() {
     case '7': gb_day1 = gb_DATE_FONT_WEEKDAY_7_a; gb_day2 = gb_DATE_FONT_WEEKDAY_7_b; break;
   }
   
-  // Bitmap für date1 bestimmen
+  // get date2 bitmap
   switch(buffer_date[1]) {
-    // 0 ist Standardwert
+    // 0 is default
     //case '0': gb_date1 = gb_DATE_NUMBER[0]; break;
     case '1': gb_date1 = gb_DATE_NUMBER[1]; break;
     case '2': gb_date1 = gb_DATE_NUMBER[2]; break;
@@ -149,9 +151,9 @@ static void update_date() {
     case '9': gb_date1 = gb_DATE_NUMBER[9]; break;
   }
   
-  // Bitmap für date2 bestimmen
+  // get date2 bitmap
   switch(buffer_date[2]) {
-    // 0 ist Standardwert
+    // 0 is default
     //case '0': gb_date2 = gb_DATE_NUMBER[0]; break;
     case '1': gb_date2 = gb_DATE_NUMBER[1]; break;
     case '2': gb_date2 = gb_DATE_NUMBER[2]; break;
@@ -164,9 +166,9 @@ static void update_date() {
     case '9': gb_date2 = gb_DATE_NUMBER[9]; break;
   }
   
-  // Bitmap für date3 bestimmen
+  // get date3 bitmap
   switch(buffer_date[3]) {
-    // 0 ist Standardwert
+    // 0 is default
     //case '0': gb_date3 = gb_DATE_NUMBER[0]; break;
     case '1': gb_date3 = gb_DATE_NUMBER[1]; break;
     case '2': gb_date3 = gb_DATE_NUMBER[2]; break;
@@ -179,9 +181,9 @@ static void update_date() {
     case '9': gb_date3 = gb_DATE_NUMBER[9]; break;
   }
   
-  // Bitmap für date4 bestimmen
+  // get bitmap for date4
   switch(buffer_date[4]) {
-    // 0 ist Standardwert
+    // 0 is default
     //case '0': gb_date4 = gb_DATE_NUMBER[0]; break;
     case '1': gb_date4 = gb_DATE_NUMBER[1]; break;
     case '2': gb_date4 = gb_DATE_NUMBER[2]; break;
@@ -194,7 +196,7 @@ static void update_date() {
     case '9': gb_date4 = gb_DATE_NUMBER[9]; break;
   }
   
-  // Bitmaps setzen
+  // set bitmaps
   bitmap_layer_set_bitmap(bl_day1, gb_day1);
   bitmap_layer_set_bitmap(bl_day2, gb_day2);
   bitmap_layer_set_bitmap(bl_date1, gb_date1);
@@ -204,12 +206,13 @@ static void update_date() {
 }
 
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
+  // update time and date
   update_time();
   update_date();
 }
 
 static void set_battery(BatteryChargeState charge_state) {
-  // Bitmap für battery bestimmen
+  // get battery bitmap
   GBitmap *gb_battery = gb_ICON_BATTERY_CRITICAL;
   
   if (charge_state.is_charging)
@@ -229,18 +232,19 @@ static void set_battery(BatteryChargeState charge_state) {
       default: gb_battery = gb_ICON_BATTERY_CRITICAL; break;
     }
   
-  // Bitmap setzen
+  // set bitmap
   bitmap_layer_set_bitmap(bl_battery, gb_battery);
 }
 
 static void set_bluetooth(bool connected, bool vibrate) {
+  // get bluetooth bitmap
   if (connected) {
     bitmap_layer_set_bitmap(bl_bluetooth, gb_ICON_BLUETOOTH_CONNECTED);
     
     if (vibrate) {
       // Vibe pattern: ON for 100ms, OFF for 100ms, ON for 100ms:
       static const uint32_t segments[] = { 100, 100, 100 };
-      vibes_enqueue_custom_pattern((VibePattern) {
+      vibes_enqueue_custom_pattern( (VibePattern) {
         .durations = segments,
         .num_segments = ARRAY_LENGTH(segments),
       });
@@ -251,7 +255,7 @@ static void set_bluetooth(bool connected, bool vibrate) {
     if (vibrate) {
       // Vibe pattern: ON for 100ms, OFF for 100ms, ON for 100ms, OFF for 100ms, ON for 100ms:
       static const uint32_t segments[] = { 100, 100, 100, 100, 100 };
-      vibes_enqueue_custom_pattern((VibePattern) {
+      vibes_enqueue_custom_pattern( (VibePattern) {
         .durations = segments,
         .num_segments = ARRAY_LENGTH(segments),
       });
@@ -260,44 +264,44 @@ static void set_bluetooth(bool connected, bool vibrate) {
 }
 
 static void hide_Battery_Bluetooth() {
-  // Wieder verstecken
+  // hide icons
   layer_set_hidden(bitmap_layer_get_layer(bl_battery), true);
   layer_set_hidden(bitmap_layer_get_layer(bl_bluetooth), true);
 }
 
 static void display_Battery_Bluetooth() {
-  // Symbole einblenden
+  // show icons
   layer_set_hidden(bitmap_layer_get_layer(bl_battery), false);
   layer_set_hidden(bitmap_layer_get_layer(bl_bluetooth), false);
   
-  // Warten -> ggf Timer abbrechen und wieder erstellen mit anschließender Methode zum Verstecken
+  // wait -> cancel previous timer and register new with method to hide the icons
   app_timer_cancel(display_timer);
   display_timer = app_timer_register(DISPLAY_FOR_MILLISECONDS, hide_Battery_Bluetooth, NULL);
 }
 
 static void battery_handler(BatteryChargeState charge_state) {
-  // Weiterleiten
+  // set battery icon
   set_battery(charge_state);
   
-  // Symbole anzeigen
+  // show icons
   display_Battery_Bluetooth();
 }
 
 static void bluetooth_handler(bool connected) {
-  // Weiterleiten
+  // set bluetooth icon
   set_bluetooth(connected, true);
   
-  // Symbole anzeigen
+  // show icons
   display_Battery_Bluetooth();
 }
 
 static void tap_handler(AccelAxisType axis, int32_t direction) {
-  // Weiterleiten
+  // show icons
   display_Battery_Bluetooth();
 }
 
 static void create_GBitmaps() {
-  // 71x71 Zahlen laden
+  // load 71x71 numbers
   gb_TIME_NUMBER[0] = gbitmap_create_with_resource(RESOURCE_ID_NUMBER_71x71_0);
   gb_TIME_NUMBER[1] = gbitmap_create_with_resource(RESOURCE_ID_NUMBER_71x71_1);
   gb_TIME_NUMBER[2] = gbitmap_create_with_resource(RESOURCE_ID_NUMBER_71x71_2);
@@ -309,7 +313,7 @@ static void create_GBitmaps() {
   gb_TIME_NUMBER[8] = gbitmap_create_with_resource(RESOURCE_ID_NUMBER_71x71_8);
   gb_TIME_NUMBER[9] = gbitmap_create_with_resource(RESOURCE_ID_NUMBER_71x71_9);
   
-  // 14x22 Zahlen laden
+  // load 14x22 numbers
   gb_DATE_NUMBER[0] = gbitmap_create_with_resource(RESOURCE_ID_NUMBER_14x22_0);
   gb_DATE_NUMBER[1] = gbitmap_create_with_resource(RESOURCE_ID_NUMBER_14x22_1);
   gb_DATE_NUMBER[2] = gbitmap_create_with_resource(RESOURCE_ID_NUMBER_14x22_2);
@@ -321,7 +325,7 @@ static void create_GBitmaps() {
   gb_DATE_NUMBER[8] = gbitmap_create_with_resource(RESOURCE_ID_NUMBER_14x22_8);
   gb_DATE_NUMBER[9] = gbitmap_create_with_resource(RESOURCE_ID_NUMBER_14x22_9);
   
-  // Batterie laden
+  // load battery icons
   gb_ICON_BATTERY_20 = gbitmap_create_with_resource(RESOURCE_ID_ICON_BATTERY_20);
   gb_ICON_BATTERY_30 = gbitmap_create_with_resource(RESOURCE_ID_ICON_BATTERY_30);
   gb_ICON_BATTERY_40 = gbitmap_create_with_resource(RESOURCE_ID_ICON_BATTERY_40);
@@ -334,13 +338,13 @@ static void create_GBitmaps() {
   gb_ICON_BATTERY_CHARGING = gbitmap_create_with_resource(RESOURCE_ID_ICON_BATTERY_CHARGING);
   gb_ICON_BATTERY_CRITICAL = gbitmap_create_with_resource(RESOURCE_ID_ICON_BATTERY_CRITICAL);
     
-  // Bluetooth Icons laden
+  // load bluetooth icons
   gb_ICON_BLUETOOTH_CONNECTED = gbitmap_create_with_resource(RESOURCE_ID_ICON_BLUETOOTH_CONNECTED);
   gb_ICON_BLUETOOTH_DISCONNECTED = gbitmap_create_with_resource(RESOURCE_ID_ICON_BLUETOOTH_DISCONNECTED);
   
-  // 14x22 Wochentage laden (inkl localisation)
+  // load 14x22 weekdays (incl localisation)
   if (strcmp("de_DE", sys_locale) == 0) {
-    // Deutsch
+    // german
     gb_DATE_FONT_WEEKDAY_1_a = gbitmap_create_with_resource(RESOURCE_ID_FONT_14x22_M);
     gb_DATE_FONT_WEEKDAY_1_b = gbitmap_create_with_resource(RESOURCE_ID_FONT_14x22_O);
     gb_DATE_FONT_WEEKDAY_2_a = gbitmap_create_with_resource(RESOURCE_ID_FONT_14x22_D);
@@ -356,7 +360,7 @@ static void create_GBitmaps() {
     gb_DATE_FONT_WEEKDAY_7_a = gb_DATE_FONT_WEEKDAY_6_a;
     gb_DATE_FONT_WEEKDAY_7_b = gb_DATE_FONT_WEEKDAY_1_b;
   } else if (strcmp("fr_FR", sys_locale) == 0) {
-    // Franzoesisch
+    // french
     gb_DATE_FONT_WEEKDAY_1_a = gbitmap_create_with_resource(RESOURCE_ID_FONT_14x22_L);
     gb_DATE_FONT_WEEKDAY_1_b = gbitmap_create_with_resource(RESOURCE_ID_FONT_14x22_U);
     gb_DATE_FONT_WEEKDAY_2_a = gbitmap_create_with_resource(RESOURCE_ID_FONT_14x22_M);
@@ -372,7 +376,7 @@ static void create_GBitmaps() {
     gb_DATE_FONT_WEEKDAY_7_a = gbitmap_create_with_resource(RESOURCE_ID_FONT_14x22_D);
     gb_DATE_FONT_WEEKDAY_7_b = gbitmap_create_with_resource(RESOURCE_ID_FONT_14x22_I);
   } else if (strcmp("es_ES", sys_locale) == 0) {
-    // Spanisch
+    // spanish
     gb_DATE_FONT_WEEKDAY_1_a = gbitmap_create_with_resource(RESOURCE_ID_FONT_14x22_L);
     gb_DATE_FONT_WEEKDAY_1_b = gbitmap_create_with_resource(RESOURCE_ID_FONT_14x22_U);
     gb_DATE_FONT_WEEKDAY_2_a = gbitmap_create_with_resource(RESOURCE_ID_FONT_14x22_M);
@@ -388,7 +392,7 @@ static void create_GBitmaps() {
     gb_DATE_FONT_WEEKDAY_7_a = gbitmap_create_with_resource(RESOURCE_ID_FONT_14x22_D);
     gb_DATE_FONT_WEEKDAY_7_b = gbitmap_create_with_resource(RESOURCE_ID_FONT_14x22_O);
   } else {
-    // Standard: Englisch
+    // default: english
     gb_DATE_FONT_WEEKDAY_1_a = gbitmap_create_with_resource(RESOURCE_ID_FONT_14x22_M);
     gb_DATE_FONT_WEEKDAY_1_b = gbitmap_create_with_resource(RESOURCE_ID_FONT_14x22_O);
     gb_DATE_FONT_WEEKDAY_2_a = gbitmap_create_with_resource(RESOURCE_ID_FONT_14x22_T);
@@ -408,7 +412,7 @@ static void create_GBitmaps() {
 }
 
 static void destroy_GBitmaps() {
-  // 71x71 Zahlen zerstoeren
+  // destroy 71x71 numbers
   gbitmap_destroy(gb_TIME_NUMBER[0]);
   gbitmap_destroy(gb_TIME_NUMBER[1]);
   gbitmap_destroy(gb_TIME_NUMBER[2]);
@@ -420,7 +424,7 @@ static void destroy_GBitmaps() {
   gbitmap_destroy(gb_TIME_NUMBER[8]);
   gbitmap_destroy(gb_TIME_NUMBER[9]);
   
-  // 14x22 Zahlen zerstoeren
+  // destroy 14x22 numbers
   gbitmap_destroy(gb_DATE_NUMBER[0]);
   gbitmap_destroy(gb_DATE_NUMBER[1]);
   gbitmap_destroy(gb_DATE_NUMBER[2]);
@@ -432,7 +436,7 @@ static void destroy_GBitmaps() {
   gbitmap_destroy(gb_DATE_NUMBER[8]);
   gbitmap_destroy(gb_DATE_NUMBER[9]);
   
-  // Batterie zerstoeren
+  // destroy battery icons
   gbitmap_destroy(gb_ICON_BATTERY_20);
   gbitmap_destroy(gb_ICON_BATTERY_30);
   gbitmap_destroy(gb_ICON_BATTERY_40);
@@ -445,13 +449,13 @@ static void destroy_GBitmaps() {
   gbitmap_destroy(gb_ICON_BATTERY_CHARGING);
   gbitmap_destroy(gb_ICON_BATTERY_CRITICAL);
   
-  // Bluetooth Icons zerstoeren
+  // destroy bluetooth icons
   gbitmap_destroy(gb_ICON_BLUETOOTH_CONNECTED);
   gbitmap_destroy(gb_ICON_BLUETOOTH_DISCONNECTED);
   
-  // 14x22 Wochentage zerstoeren
+  // destroy only loaded 14x22 numbers
   if (strcmp("de_DE", sys_locale) == 0) {
-    // Deutsch
+    // german
     gbitmap_destroy(gb_DATE_FONT_WEEKDAY_1_a);
     gbitmap_destroy(gb_DATE_FONT_WEEKDAY_1_b);
     gbitmap_destroy(gb_DATE_FONT_WEEKDAY_2_a);
@@ -461,7 +465,7 @@ static void destroy_GBitmaps() {
     gbitmap_destroy(gb_DATE_FONT_WEEKDAY_6_a);
     gbitmap_destroy(gb_DATE_FONT_WEEKDAY_6_b);
   } else if (strcmp("fr_FR", sys_locale) == 0 || strcmp("es_ES", sys_locale) == 0) {
-    // Franzoesisch oder Spanisch
+    // french oder spanish
     gbitmap_destroy(gb_DATE_FONT_WEEKDAY_1_a);
     gbitmap_destroy(gb_DATE_FONT_WEEKDAY_1_b);
     gbitmap_destroy(gb_DATE_FONT_WEEKDAY_2_a);
@@ -473,7 +477,7 @@ static void destroy_GBitmaps() {
     gbitmap_destroy(gb_DATE_FONT_WEEKDAY_7_a);
     gbitmap_destroy(gb_DATE_FONT_WEEKDAY_7_b);
   } else {
-    // Standard: Englisch
+    // default: english
     gbitmap_destroy(gb_DATE_FONT_WEEKDAY_1_a);
     gbitmap_destroy(gb_DATE_FONT_WEEKDAY_1_b);
     gbitmap_destroy(gb_DATE_FONT_WEEKDAY_2_a);
@@ -490,7 +494,7 @@ static void destroy_GBitmaps() {
 }
 
 static void create_BitmapLayers() {
-  // BitmapLayer erstellen
+  // create BitmapLayer
   bl_hour1 = bitmap_layer_create(GRect( 0, 24, 71, 71));
   bl_hour2 = bitmap_layer_create(GRect(73, 24, 71, 71));
   bl_minute1 = bitmap_layer_create(GRect( 0, 97, 71, 71));
@@ -508,7 +512,7 @@ static void create_BitmapLayers() {
   bl_battery = bitmap_layer_create(GRect(132, 0, 12, 22));
   bl_bluetooth = bitmap_layer_create(GRect(0, 0, 12, 22));
   
-  // Standards setzen
+  // set defaults
   bitmap_layer_set_bitmap(bl_hour1, gb_TIME_NUMBER[0]);
   bitmap_layer_set_bitmap(bl_hour2, gb_TIME_NUMBER[0]);
   bitmap_layer_set_bitmap(bl_minute1, gb_TIME_NUMBER[0]);
@@ -526,12 +530,13 @@ static void create_BitmapLayers() {
   bitmap_layer_set_bitmap(bl_battery, gb_ICON_BATTERY_CRITICAL);
   bitmap_layer_set_bitmap(bl_bluetooth, gb_ICON_BLUETOOTH_DISCONNECTED);
   
-  // Standardmaessig verstecken
+  // hide at start
   layer_set_hidden(bitmap_layer_get_layer(bl_battery), true);
   layer_set_hidden(bitmap_layer_get_layer(bl_bluetooth), true);
 }
 
 static void destroy_BitmapLayers() {
+  // destroy BitmapLayers
   bitmap_layer_destroy(bl_hour1);
   bitmap_layer_destroy(bl_hour2);
   bitmap_layer_destroy(bl_minute1);
@@ -551,16 +556,16 @@ static void destroy_BitmapLayers() {
 }
 
 static void main_window_load(Window *window) {
-  // Localisation laden
-  sys_locale = setlocale(LC_ALL, "de_DE");
+  // load localisation
+  sys_locale = setlocale(LC_ALL, "");
   
-  // GBitmaps erstellen
+  // create GBitmaps
   create_GBitmaps();
   
-  // BitmapLayer erstellen und die Standards setzen
+  // create BitmapLayers and set defaults
   create_BitmapLayers();
   
-  // BitmapLayer hinzufuegen
+  // add BitmapLayers
   layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(bl_hour1));
   layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(bl_hour2));
   layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(bl_minute1));
@@ -578,87 +583,87 @@ static void main_window_load(Window *window) {
   layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(bl_battery));
   layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(bl_bluetooth));
   
-  // Invertierte Ebene erstellen und hinzufügen
+  // create and add InverterLayer
   il_inverted = inverter_layer_create(GRect(0, 0, 144, 186));
   layer_add_child(window_get_root_layer(window), inverter_layer_get_layer(il_inverted));
-//  il_inverted2 = inverter_layer_create(GRect(0, 24, 144, 73)); // Obere Reihe
-//  il_inverted2 = inverter_layer_create(GRect(0, 95, 144, 73)); // Untere Reihe
+//  il_inverted2 = inverter_layer_create(GRect(0, 24, 144, 73)); // top row
+//  il_inverted2 = inverter_layer_create(GRect(0, 95, 144, 73)); // bottom row
 //  layer_add_child(window_get_root_layer(window), inverter_layer_get_layer(il_inverted2)); 
   
-  // Erster Aufruf, damit von Anfang an dargestllt wird
+  // first call to show correct time, date and icons at start
   update_time();
   update_date();
   set_battery(battery_state_service_peek());
   set_bluetooth(bluetooth_connection_service_peek(), false);
   
-  // Batterie und Bluetooth einmal anzeigen
+  // show battery and bluetooth one time at start
   display_Battery_Bluetooth();
 }
 
 static void main_window_unload(Window *window) {
-  // BitmapLayer zerstoeren
+  // destroy BitmapLayers
   destroy_BitmapLayers();
   
-  // GBitmaps zerstoeren
+  // destroy GBitmaps
   destroy_GBitmaps();
   
-  // Invertierte Ebene zerstoeren
+  // destroy InverterLayer
   inverter_layer_destroy(il_inverted);
 }
 
 static void initHandler() {
-  // TickHandler registrieren
+  // subscribe TickHandler
   tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
   
-  // BatteryHandler registrieren
+  // subscribe BatteryHandler
   battery_state_service_subscribe(battery_handler);
   
-  // BluetoothHandler registrieren
+  // subscribe BluetoothHandler
   bluetooth_connection_service_subscribe(bluetooth_handler);
   
-  // TapHandler registrieren
+  // subscribe TapHandler
   accel_tap_service_subscribe(tap_handler);
 }
 
 static void deinitHandler() { 
-  // TickHandler entfernen
+  // unsubscribe TickHandler
   tick_timer_service_unsubscribe();
   
-  // BatteryHandler entfernen
+  // unsubscribe BatteryHandler
   battery_state_service_unsubscribe();
   
-  // BluetoothHandler entfernen
+  // unsubscribe BluetoothHandler
   bluetooth_connection_service_unsubscribe();
   
-  // TapHandler entfernen
+  // unsubscribe TapHandler
   accel_tap_service_unsubscribe();
 }
 
 static void init() {  
-  // Main Window Element erstellen
+  // create Window
   w_main_window = window_create();
   
-  // Window Hintergrundfarbe setzen
+  // set backgroundcolor for Window
   window_set_background_color(w_main_window, GColorWhite);
 
-  // Handler verknuepfen, die die Elemente verwalten
+  // set Windows Handlers
   window_set_window_handlers(w_main_window, (WindowHandlers) {
     .load = main_window_load,
     .unload = main_window_unload
   });
 
-  // Window auf der Uhr anzeigen, mit animated=true
+  // show Window with animated=true
   window_stack_push(w_main_window, true);
   
-  // Handler registrieren
+  // subscribe Handlers
   initHandler();
 }
 
 static void deinit() { 
-  // Handler entfernen
+  // unsubscribe Handlers
   deinitHandler();
   
-  // Window zerstoeren
+  // destroy Window
   window_destroy(w_main_window);
 }
 

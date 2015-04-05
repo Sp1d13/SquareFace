@@ -270,7 +270,7 @@
     "shortName": "SquareFace",
     "uuid": "43d9eb93-38e7-4a74-844c-ea613373097f",
     "versionCode": 1,
-    "versionLabel": "1.1",
+    "versionLabel": "1.2",
     "watchapp": {
         "watchface": true
     }
