@@ -1,0 +1,277 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        ""
+    ],
+    "companyName": "Spidie",
+    "longName": "SquareFace",
+    "projectType": "native",
+    "resources": {
+        "media": [
+            {
+                "file": "images/14x22_date_font_V.png",
+                "name": "FONT_14x22_V",
+                "type": "png"
+            },
+            {
+                "file": "images/14x22_date_font_L.png",
+                "name": "FONT_14x22_L",
+                "type": "png"
+            },
+            {
+                "file": "images/14x22_date_font_J.png",
+                "name": "FONT_14x22_J",
+                "type": "png"
+            },
+            {
+                "file": "images/14x22_date_font_W.png",
+                "name": "FONT_14x22_W",
+                "type": "png"
+            },
+            {
+                "file": "images/14x22_date_font_U.png",
+                "name": "FONT_14x22_U",
+                "type": "png"
+            },
+            {
+                "file": "images/14x22_date_font_T.png",
+                "name": "FONT_14x22_T",
+                "type": "png"
+            },
+            {
+                "file": "images/14x22_date_font_H.png",
+                "name": "FONT_14x22_H",
+                "type": "png"
+            },
+            {
+                "file": "images/14x22_date_font_E.png",
+                "name": "FONT_14x22_E",
+                "type": "png"
+            },
+            {
+                "file": "images/menuegrafik.png",
+                "menuIcon": true,
+                "name": "ICON_MENU",
+                "type": "png"
+            },
+            {
+                "file": "images/12x22_bluetooth_disconnected.png",
+                "name": "ICON_BLUETOOTH_DISCONNECTED",
+                "type": "png"
+            },
+            {
+                "file": "images/12x22_bluetooth_connected.png",
+                "name": "ICON_BLUETOOTH_CONNECTED",
+                "type": "png"
+            },
+            {
+                "file": "images/12x22_battery_90.png",
+                "name": "ICON_BATTERY_90",
+                "type": "png"
+            },
+            {
+                "file": "images/12x22_battery_70.png",
+                "name": "ICON_BATTERY_70",
+                "type": "png"
+            },
+            {
+                "file": "images/12x22_battery_50.png",
+                "name": "ICON_BATTERY_50",
+                "type": "png"
+            },
+            {
+                "file": "images/12x22_battery_30.png",
+                "name": "ICON_BATTERY_30",
+                "type": "png"
+            },
+            {
+                "file": "images/12x22_battery_critical.png",
+                "name": "ICON_BATTERY_CRITICAL",
+                "type": "png"
+            },
+            {
+                "file": "images/12x22_battery_charging.png",
+                "name": "ICON_BATTERY_CHARGING",
+                "type": "png"
+            },
+            {
+                "file": "images/12x22_battery_100.png",
+                "name": "ICON_BATTERY_100",
+                "type": "png"
+            },
+            {
+                "file": "images/12x22_battery_80.png",
+                "name": "ICON_BATTERY_80",
+                "type": "png"
+            },
+            {
+                "file": "images/12x22_battery_60.png",
+                "name": "ICON_BATTERY_60",
+                "type": "png"
+            },
+            {
+                "file": "images/12x22_battery_40.png",
+                "name": "ICON_BATTERY_40",
+                "type": "png"
+            },
+            {
+                "file": "images/12x22_battery_20.png",
+                "name": "ICON_BATTERY_20",
+                "type": "png"
+            },
+            {
+                "file": "images/14x22_date_font_dot.png",
+                "name": "FONT_14x22_DOT",
+                "type": "png"
+            },
+            {
+                "file": "images/14x22_date_font_S.png",
+                "name": "FONT_14x22_S",
+                "type": "png"
+            },
+            {
+                "file": "images/14x22_date_font_R.png",
+                "name": "FONT_14x22_R",
+                "type": "png"
+            },
+            {
+                "file": "images/14x22_date_font_O.png",
+                "name": "FONT_14x22_O",
+                "type": "png"
+            },
+            {
+                "file": "images/14x22_date_font_M.png",
+                "name": "FONT_14x22_M",
+                "type": "png"
+            },
+            {
+                "file": "images/14x22_date_font_I.png",
+                "name": "FONT_14x22_I",
+                "type": "png"
+            },
+            {
+                "file": "images/14x22_date_font_F.png",
+                "name": "FONT_14x22_F",
+                "type": "png"
+            },
+            {
+                "file": "images/14x22_date_font_D.png",
+                "name": "FONT_14x22_D",
+                "type": "png"
+            },
+            {
+                "file": "images/14x22_date_font_A.png",
+                "name": "FONT_14x22_A",
+                "type": "png"
+            },
+            {
+                "file": "images/14x22_date_font_9.png",
+                "name": "NUMBER_14x22_9",
+                "type": "png"
+            },
+            {
+                "file": "images/14x22_date_font_8.png",
+                "name": "NUMBER_14x22_8",
+                "type": "png"
+            },
+            {
+                "file": "images/14x22_date_font_7.png",
+                "name": "NUMBER_14x22_7",
+                "type": "png"
+            },
+            {
+                "file": "images/14x22_date_font_6.png",
+                "name": "NUMBER_14x22_6",
+                "type": "png"
+            },
+            {
+                "file": "images/14x22_date_font_5.png",
+                "name": "NUMBER_14x22_5",
+                "type": "png"
+            },
+            {
+                "file": "images/14x22_date_font_4.png",
+                "name": "NUMBER_14x22_4",
+                "type": "png"
+            },
+            {
+                "file": "images/14x22_date_font_3.png",
+                "name": "NUMBER_14x22_3",
+                "type": "png"
+            },
+            {
+                "file": "images/14x22_date_font_2.png",
+                "name": "NUMBER_14x22_2",
+                "type": "png"
+            },
+            {
+                "file": "images/14x22_date_font_1.png",
+                "name": "NUMBER_14x22_1",
+                "type": "png"
+            },
+            {
+                "file": "images/14x22_date_font_0.png",
+                "name": "NUMBER_14x22_0",
+                "type": "png"
+            },
+            {
+                "file": "images/71x71_0009.png",
+                "name": "NUMBER_71x71_9",
+                "type": "png"
+            },
+            {
+                "file": "images/71x71_0008.png",
+                "name": "NUMBER_71x71_8",
+                "type": "png"
+            },
+            {
+                "file": "images/71x71_0007.png",
+                "name": "NUMBER_71x71_7",
+                "type": "png"
+            },
+            {
+                "file": "images/71x71_0006.png",
+                "name": "NUMBER_71x71_6",
+                "type": "png"
+            },
+            {
+                "file": "images/71x71_0005.png",
+                "name": "NUMBER_71x71_5",
+                "type": "png"
+            },
+            {
+                "file": "images/71x71_0004.png",
+                "name": "NUMBER_71x71_4",
+                "type": "png"
+            },
+            {
+                "file": "images/71x71_0003.png",
+                "name": "NUMBER_71x71_3",
+                "type": "png"
+            },
+            {
+                "file": "images/71x71_0002.png",
+                "name": "NUMBER_71x71_2",
+                "type": "png"
+            },
+            {
+                "file": "images/71x71_0001.png",
+                "name": "NUMBER_71x71_1",
+                "type": "png"
+            },
+            {
+                "file": "images/71x71_0000.png",
+                "name": "NUMBER_71x71_0",
+                "type": "png"
+            }
+        ]
+    },
+    "sdkVersion": "2",
+    "shortName": "SquareFace",
+    "uuid": "43d9eb93-38e7-4a74-844c-ea613373097f",
+    "versionCode": 1,
+    "versionLabel": "1.1",
+    "watchapp": {
+        "watchface": true
+    }
+}
