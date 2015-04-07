@@ -1,7 +1,11 @@
 {
-    "appKeys": {},
+    "appKeys": {
+        "FORMATDATE": 2,
+        "INVERTFACE": 0,
+        "INVERTROW": 1
+    },
     "capabilities": [
-        ""
+        "configurable"
     ],
     "companyName": "Spidie",
     "longName": "SquareFace",
