@@ -12,7 +12,6 @@ static struct bluetooth_icons bluetoothIcons;
 static AppTimer *display_timer;
 static char *sys_locale;
 static struct configurable_variables configurable;
-static uint32_t DISPLAY_FOR_MILLISECONDS = 5000;
 
 static void update_time() {
   // create tm-structure
@@ -598,6 +597,26 @@ static void create_BitmapLayers() {
   layer_set_hidden(bitmap_layer_get_layer(bl_bluetooth), true);
 }
 
+static void add_BitmapLayers() {
+  // add BitmapLayers
+  layer_add_child(window_get_root_layer(w_main_window), bitmap_layer_get_layer(timeLayer.hour1));
+  layer_add_child(window_get_root_layer(w_main_window), bitmap_layer_get_layer(timeLayer.hour2));
+  layer_add_child(window_get_root_layer(w_main_window), bitmap_layer_get_layer(timeLayer.minute1));
+  layer_add_child(window_get_root_layer(w_main_window), bitmap_layer_get_layer(timeLayer.minute2));
+  
+  layer_add_child(window_get_root_layer(w_main_window), bitmap_layer_get_layer(dateLayer.day1));
+  layer_add_child(window_get_root_layer(w_main_window), bitmap_layer_get_layer(dateLayer.day2));
+  layer_add_child(window_get_root_layer(w_main_window), bitmap_layer_get_layer(dateLayer.date1));
+  layer_add_child(window_get_root_layer(w_main_window), bitmap_layer_get_layer(dateLayer.date2));
+  layer_add_child(window_get_root_layer(w_main_window), bitmap_layer_get_layer(dateLayer.dot1));
+  layer_add_child(window_get_root_layer(w_main_window), bitmap_layer_get_layer(dateLayer.date3));
+  layer_add_child(window_get_root_layer(w_main_window), bitmap_layer_get_layer(dateLayer.date4));
+  layer_add_child(window_get_root_layer(w_main_window), bitmap_layer_get_layer(dateLayer.dot2));
+  
+  layer_add_child(window_get_root_layer(w_main_window), bitmap_layer_get_layer(bl_battery));
+  layer_add_child(window_get_root_layer(w_main_window), bitmap_layer_get_layer(bl_bluetooth));
+}
+
 static void destroy_BitmapLayers() {
   // destroy BitmapLayers
   bitmap_layer_destroy(timeLayer.hour1);
@@ -652,22 +671,7 @@ static void window_load(Window *window) {
   create_BitmapLayers();
   
   // add BitmapLayers
-  layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(timeLayer.hour1));
-  layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(timeLayer.hour2));
-  layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(timeLayer.minute1));
-  layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(timeLayer.minute2));
-  
-  layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(dateLayer.day1));
-  layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(dateLayer.day2));
-  layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(dateLayer.date1));
-  layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(dateLayer.date2));
-  layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(dateLayer.dot1));
-  layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(dateLayer.date3));
-  layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(dateLayer.date4));
-  layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(dateLayer.dot2));
-  
-  layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(bl_battery));
-  layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(bl_bluetooth));
+  add_BitmapLayers();
   
   // create InverterLayers and set visibility defaults
   create_InverterLayers();
