@@ -12,6 +12,8 @@ static struct bluetooth_icons bluetoothIcons;
 static AppTimer *display_timer;
 static char *sys_locale;
 static struct configurable_variables configurable;
+static AppSync s_sync;
+static uint8_t s_sync_buffer[64];
 
 static void update_time() {
   // create tm-structure
@@ -109,7 +111,10 @@ static void update_date() {
   char buffer_date[] = "00000";
 
   // write date in buffer
-  strftime(buffer_date, sizeof("00000"), "%u%d%m", tick_time);
+  if (configurable.formatDate == 0)
+    strftime(buffer_date, sizeof("00000"), "%u%d%m", tick_time);
+  else
+    strftime(buffer_date, sizeof("00000"), "%u%m%d", tick_time);
   
   // set defaults
   GBitmap *gb_day1 = dateFont.weekday_1_a;
@@ -200,27 +205,36 @@ static void update_date() {
   bitmap_layer_set_bitmap(dateLayer.date4, gb_date4);
 }
 
-static void update_face() {  
-  if (strcmp("true", configurable.invertFace) == 0)
+static void update_invertFace() { 
+  // invert whole watchface ?
+  if (configurable.invertFace == 1)
       layer_set_hidden(inverter_layer_get_layer(il_inverted_face), true);
   else
       layer_set_hidden(inverter_layer_get_layer(il_inverted_face), false);
-  
-  switch(configurable.invertRow[0]) {
-    case '1': 
+}
+
+static void update_invertRow() { 
+  // invert a row ?
+  switch(configurable.invertRow) {
+    case 1: 
       layer_set_hidden(inverter_layer_get_layer(il_inverted_topRow), false);
       layer_set_hidden(inverter_layer_get_layer(il_inverted_bottomRow), true);
       break;
-    case '2': 
+    case 2: 
       layer_set_hidden(inverter_layer_get_layer(il_inverted_topRow), true);
       layer_set_hidden(inverter_layer_get_layer(il_inverted_bottomRow), false);
       break;
-    case '0':
+    case 0:
     default:
       layer_set_hidden(inverter_layer_get_layer(il_inverted_topRow), true);
       layer_set_hidden(inverter_layer_get_layer(il_inverted_bottomRow), true);
       break;
   }
+}
+
+static void update_formatDate() {
+  // set new date format
+  update_date();
 }
 
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
@@ -319,47 +333,30 @@ static void tap_handler(AccelAxisType axis, int32_t direction) {
   display_Battery_Bluetooth();
 }
 
-static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
-  // Store incoming information
-  char invertFace_buffer[] = "false";
-  char invertRow_buffer[] = "0";
-  
-  // Read first item
-  Tuple *t = dict_read_first(iterator);
+static void sync_error_callback(DictionaryResult dict_error, AppMessageResult app_message_error, void *context) {
+  APP_LOG(APP_LOG_LEVEL_ERROR, "App Message Sync Error: %d", app_message_error);
+}
 
-  // For all items
-  while(t != NULL) {
-    // Which key was received?
-    switch(t->key) {
-      case INVERTFACE: snprintf(invertFace_buffer, sizeof(invertFace_buffer), "%s", t->value->cstring); break;
-      case INVERTROW: snprintf(invertRow_buffer, sizeof(invertRow_buffer), "%s", t->value->cstring); break;
-      default: APP_LOG(APP_LOG_LEVEL_ERROR, "Key %d not recognized!", (int)t->key); break;
-    }
+static void sync_tuple_changed_callback(const uint32_t key, const Tuple* new_tuple, const Tuple* old_tuple, void* context) {
+  switch (key) {
+    case INVERTFACE:
+      configurable.invertFace = new_tuple->value->int32;
+      persist_write_int(KEY_INVERTFACE, configurable.invertFace);
+      update_invertFace();
+      break;
 
-    // Look for next item
-    t = dict_read_next(iterator);
+    case INVERTROW:
+      configurable.invertRow = new_tuple->value->int32;
+      persist_write_int(KEY_INVERTROW, configurable.invertRow);
+      update_invertRow();
+      break;
+
+    case FORMATDATE:
+      configurable.formatDate = new_tuple->value->int32;
+      persist_write_int(KEY_FORMATDATE, configurable.formatDate);
+      update_formatDate();
+      break;
   }
-  
-  // set incoming information
-  snprintf(configurable.invertFace, sizeof(invertFace_buffer), "%s", invertFace_buffer);
-  persist_write_string(PERSIST_KEY_INVERTFACE, configurable.invertFace);
-  snprintf(configurable.invertRow, sizeof(invertRow_buffer), "%s", invertRow_buffer);
-  persist_write_string(PERSIST_KEY_INVERTROW, configurable.invertRow);
-  
-  // update the watchface with the new information
-  update_face();
-}
-
-static void inbox_dropped_callback(AppMessageResult reason, void *context) {
-  APP_LOG(APP_LOG_LEVEL_ERROR, "inbox_dropped_callback(): Message dropped!");
-}
-
-static void outbox_failed_callback(DictionaryIterator *iterator, AppMessageResult reason, void *context) {
-  APP_LOG(APP_LOG_LEVEL_ERROR, "outbox_failed_callback(): Outbox send failed!");
-}
-
-static void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
-  APP_LOG(APP_LOG_LEVEL_INFO, "outbox_sent_callback(): Outbox send success!");
 }
 
 static void create_GBitmaps() {
@@ -527,7 +524,7 @@ static void destroy_GBitmaps() {
     gbitmap_destroy(dateFont.weekday_6_a);
     gbitmap_destroy(dateFont.weekday_6_b);
   } else if (strcmp("fr_FR", sys_locale) == 0 || strcmp("es_ES", sys_locale) == 0) {
-    // french oder spanish
+    // french or spanish
     gbitmap_destroy(dateFont.weekday_1_a);
     gbitmap_destroy(dateFont.weekday_1_b);
     gbitmap_destroy(dateFont.weekday_2_a);
@@ -676,14 +673,15 @@ static void window_load(Window *window) {
   // create InverterLayers and set visibility defaults
   create_InverterLayers();
   
-  // first call to show correct time, date, design and icons at start
-  update_time();
-  update_date();
+  // set icons
   set_battery(battery_state_service_peek());
   set_bluetooth(bluetooth_connection_service_peek(), false);
-  update_face();
   
-  // show battery and bluetooth one time at start
+  // first call to show correct time, date, design and icons at start
+  update_time();
+  update_formatDate(); // -> update_date();
+  update_invertFace();
+  update_invertRow();
   display_Battery_Bluetooth();
 }
 
@@ -726,29 +724,43 @@ static void deinitHandler() {
   accel_tap_service_unsubscribe();
 }
 
-static void initAppMessage() {
-  // set variable defaults
-  snprintf(configurable.invertFace, sizeof("false"), "false");
-  snprintf(configurable.invertRow, sizeof("0"), "0");
+static void initConfigurableVar() {
+  // set variable from persistent storage, if persistent key does not exist, set defaults  
+  if (persist_exists(KEY_INVERTFACE))
+    configurable.invertFace = persist_read_int(KEY_INVERTFACE); 
+  else {
+    configurable.invertFace = 0;
+    persist_write_int(KEY_INVERTFACE, configurable.invertFace);
+  }
   
-  if (persist_exists(PERSIST_KEY_INVERTFACE))
-    persist_read_string(PERSIST_KEY_INVERTFACE, configurable.invertFace, persist_get_size(PERSIST_KEY_INVERTFACE)); 
-  else
-    persist_write_string(PERSIST_KEY_INVERTFACE, configurable.invertFace);
+  if (persist_exists(KEY_INVERTROW))
+    configurable.invertRow = persist_read_int(KEY_INVERTROW); 
+  else {
+    configurable.invertRow = 0;
+    persist_write_int(KEY_INVERTROW, configurable.invertRow);
+  }
   
-  if (persist_exists(PERSIST_KEY_INVERTROW))
-    persist_read_string(PERSIST_KEY_INVERTROW, configurable.invertRow, persist_get_size(PERSIST_KEY_INVERTROW)); 
-  else
-    persist_write_string(PERSIST_KEY_INVERTROW, configurable.invertRow);
+  if (persist_exists(KEY_FORMATDATE))
+    configurable.formatDate = persist_read_int(KEY_FORMATDATE); 
+  else {
+    configurable.formatDate = 0;
+    persist_write_int(KEY_FORMATDATE, configurable.formatDate);
+  }
+}
+
+static void initAppSync() {
+  // set initial values
+  Tuplet initial_values[] = {
+    TupletInteger(INVERTFACE, configurable.invertFace),
+    TupletInteger(INVERTROW, configurable.invertRow),
+    TupletInteger(FORMATDATE, configurable.formatDate)
+  };
   
-  // Register callbacks
-  app_message_register_inbox_received(inbox_received_callback);
-  app_message_register_inbox_dropped(inbox_dropped_callback);
-  app_message_register_outbox_failed(outbox_failed_callback);
-  app_message_register_outbox_sent(outbox_sent_callback);
-  
-  // Open AppMessage
-  app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());
+  // initialize AppSync
+  app_sync_init(&s_sync, s_sync_buffer, sizeof(s_sync_buffer), 
+    initial_values, ARRAY_LENGTH(initial_values),
+    sync_tuple_changed_callback, sync_error_callback, NULL
+  );
 }
 
 static void init() {
@@ -758,8 +770,14 @@ static void init() {
   // set background color for Window
   window_set_background_color(w_main_window, GColorWhite);
 
-  // initialize AppMessage
-  initAppMessage();
+  // initialize configurable variables
+  initConfigurableVar();
+  
+  // Open AppMessage between Pebble and Phone
+  app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());
+  
+  // initialize AppSync
+  initAppSync();
   
   // subscribe Handlers
   initHandler();
@@ -777,6 +795,9 @@ static void init() {
 static void deinit() {
   // unsubscribe Handlers
   deinitHandler();
+  
+  // deinitialize AppSync
+  app_sync_deinit(&s_sync);
   
   // destroy Window
   window_destroy(w_main_window);

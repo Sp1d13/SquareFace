@@ -1,12 +1,14 @@
 #include <pebble.h>
 
-#define PERSIST_KEY_INVERTFACE 28
-#define PERSIST_KEY_INVERTROW 29
+#define KEY_INVERTFACE 10
+#define KEY_INVERTROW 11
+#define KEY_FORMATDATE 12
 #define DISPLAY_FOR_MILLISECONDS 5000
   
 enum {
   INVERTFACE = 0x0,
-  INVERTROW = 0x1
+  INVERTROW = 0x1,
+  FORMATDATE = 0x2
 };
 
 struct time_layer {
@@ -35,5 +37,5 @@ struct bluetooth_icons {
 };
 
 struct configurable_variables {
-  char invertFace[sizeof("false")], invertRow[sizeof("0")];
+  int32_t invertFace, invertRow, formatDate;
 };
