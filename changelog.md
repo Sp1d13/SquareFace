@@ -1,3 +1,6 @@
+Changelog 1.4:
+- added: Added option to select date format (DD.MM. / MM.DD.)
+
 Changelog 1.3:
 - added: Added configuration page
 - changed: New battery and bluetooth icons
