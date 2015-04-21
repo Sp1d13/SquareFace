@@ -38,6 +38,17 @@
             <label for="invert-bottomrow">Bottom row</label>
           </fieldset>
         </div>
+
+        <div data-role="fieldcontain">
+          <fieldset data-role="controlgroup">
+            <legend>Select date format:</legend>
+            <input type="radio" name="format-date" id="format-date-ddmm" value="0" class="custom" checked="checked"/>
+            <label for="format-date-ddmm">31.12. (DD.MM.)</label>
+
+            <input type="radio" name="format-date" id="format-date-mmdd" value="1" class="custom"/>
+            <label for="format-date-mmdd">12.31. (MM.DD.)</label>
+          </fieldset>
+        </div>
       </div>
 
       <div class="ui-body ui-body-b">
@@ -82,7 +93,12 @@
 		priorChoice = getURLVariable('invertRow');
 		priorChoice = decodeURI(priorChoice);
 		if (priorChoice)
-			$('input:radio[name="invert-row"]').filter('[value="'+ priorChoice +'"]').next().click();			
+			$('input:radio[name="invert-row"]').filter('[value="'+ priorChoice +'"]').next().click();
+		
+		priorChoice = getURLVariable('formatDate');
+		priorChoice = decodeURI(priorChoice);
+		if (priorChoice)
+			$('input:radio[name="format-date"]').filter('[value="'+ priorChoice +'"]').next().click();		
 	  
         $("#b-cancel").click(function() {
           console.log("Cancel");
